@@ -2,11 +2,26 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 from rest_framework import status
 from .models import InventoryItem
+from django.contrib.auth.models import User
+from rest_framework_simplejwt.tokens import RefreshToken
+
 
 class InventoryManagementTests(TestCase):
     def setUp(self):
-        """Set up test client and test data."""
+        """Set up test client, test user, and test data."""
         self.client = APIClient()
+
+        # Create a test user
+        self.user = User.objects.create_user(username="testuser", password="testpassword")
+
+        # Generate a JWT token for the test user
+        refresh = RefreshToken.for_user(self.user)
+        self.token = str(refresh.access_token)
+
+        # Authenticate client with JWT
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {self.token}')
+
+        # Test data
         self.item_data = {"name": "Test Item", "description": "Test Description"}
         self.item = InventoryItem.objects.create(**self.item_data)
         self.item_url = f"/items/{self.item.id}/"
