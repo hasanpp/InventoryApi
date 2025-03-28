@@ -70,7 +70,8 @@ DATABASES = {
     }
 }
 
-DATABASES['default']= dj_database_url.parse("postgresql://inventory_api_svgk_user:C8jrmlNzj52CcNCp7Oelv9QV2bp2eDOF@dpg-cvj8266mcj7s73e9jksg-a.singapore-postgres.render.com/inventory_api_svgk")
+database_url = os.getenv('DATABASE_URL')
+DATABASES['default']= dj_database_url.parse(database_url)
 
 AUTH_PASSWORD_VALIDATORS = [
     {
