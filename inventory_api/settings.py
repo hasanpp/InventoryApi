@@ -1,5 +1,6 @@
 from pathlib import Path
 from dotenv import load_dotenv
+import dj_database_url
 import os
 
 load_dotenv()
@@ -69,6 +70,8 @@ DATABASES = {
     }
 }
 
+DATABASES['default']= dj_database_url.parse("postgresql://inventory_api_svgk_user:C8jrmlNzj52CcNCp7Oelv9QV2bp2eDOF@dpg-cvj8266mcj7s73e9jksg-a.singapore-postgres.render.com/inventory_api_svgk")
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -105,6 +108,18 @@ CACHES = {
         },
     }
 }
+
+if not DEBUG :
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://red-cvj8ar0gjchc7399tfu0:6379",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            },
+        }
+    }
+
 
 LOGGING = {
     "version": 1,
