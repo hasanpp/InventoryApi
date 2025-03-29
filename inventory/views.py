@@ -50,6 +50,9 @@ class InventoryManagementView(APIView):
         except InventoryItem.DoesNotExist:
             logger.error("Item not found for ID: %s", item_id)
             return Response({"error": "Item not found."}, status=404)
+        except Exception as e:
+            logger.error(str(e))
+            return Response({"error": str(e)}, status=409)
      
     def put(self, request, item_id):
         logger.info("PUT request received to update item ID: %s", item_id)
@@ -58,6 +61,9 @@ class InventoryManagementView(APIView):
         except InventoryItem.DoesNotExist:
             logger.error("Item not found for ID: %s", item_id)
             return Response({"error": "Item not found."}, status=404)
+        except Exception as e:
+            logger.error(str(e))
+            return Response({"error": str(e)}, status=409)
         
         serializer = InventoryItemSerializer(item, data=request.data, partial=True)
         if serializer.is_valid():
@@ -82,3 +88,6 @@ class InventoryManagementView(APIView):
         except InventoryItem.DoesNotExist:
             logger.error("Item not found for ID: %s", item_id)
             return Response({"error": "Item not found."}, status=404)
+        except Exception as e:
+            logger.error(str(e))
+            return Response({"error": str(e)}, status=409)
