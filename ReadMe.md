@@ -74,3 +74,44 @@ git clone https://github.com/hasanpp/InventoryApi.git
 cd inventory-api
 python -m venv venv
 source venv/bin/activate 
+pip install -r requirements.txt
+```
+
+### 2️⃣ **Set Up Virtual Environment**
+
+```sh
+
+touch .env
+
+# Django Secret Keys
+SECRET_KEY=your-django-secret-key
+JWT_SECRET_KEY=your-jwt-secret-key
+
+# Debug Mode (True for development, False for production)
+DEBUG=True
+
+# PostgreSQL Database Configuration
+DB_NAME=inventory_db
+DB_USER=postgres
+DB_PASSWORD=yourpassword
+DB_HOST=localhost
+DB_PORT=5432
+
+# Full database URL (used by dj-database-url)
+DATABASE_URL=postgres://postgres:yourpassword@localhost:5432/inventory_db
+
+```
+
+### 3️⃣ **Run Migrations & Project**
+
+```sh
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver
+```
+
+### 4️⃣ **Running Tests**
+
+```sh
+python manage.py test
+```
