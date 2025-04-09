@@ -22,17 +22,19 @@ class InventoryManagementTests(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {self.token}')
 
         # Test data
-        self.item_data = {"name": "Test Item", "description": "Test Description"}
+        self.item_data = {"name": "Test Item", "description": "Test Description", "quantity": 10, "price": "19.99"}
         self.item = InventoryItem.objects.create(**self.item_data)
         self.item_url = f"/items/{self.item.id}/"
         self.create_url = "/items/"
 
     def test_create_item_success(self):
         """Test creating an inventory item successfully."""
-        new_item = {"name": "New Item", "description": "New Description"}
+        new_item = { "name": "New Item", "description": "New Description", "quantity": 5, "price": "9.99" }
         response = self.client.post(self.create_url, new_item, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data["name"], new_item["name"])
+        self.assertEqual(response.data["quantity"], new_item["quantity"])
+        self.assertEqual(str(response.data["price"]), new_item["price"])
 
     def test_create_item_duplicate(self):
         """Test creating a duplicate inventory item."""
@@ -54,10 +56,12 @@ class InventoryManagementTests(TestCase):
 
     def test_update_item_success(self):
         """Test updating an existing inventory item."""
-        updated_data = {"name": "Updated Item"}
+        updated_data = { "name": "Updated Item", "quantity": 20, "price": "29.99" }
         response = self.client.put(self.item_url, updated_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["name"], updated_data["name"])
+        self.assertEqual(response.data["quantity"], updated_data["quantity"])
+        self.assertEqual(str(response.data["price"]), updated_data["price"])
 
     def test_update_item_not_found(self):
         """Test updating a non-existing inventory item."""
